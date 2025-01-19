@@ -1,14 +1,42 @@
 import 'package:flutter/material.dart';
 
-final ThemeData appTheme = ThemeData(
-  primarySwatch: Colors.blue,
-  textTheme: const TextTheme(
-    bodyLarge: TextStyle(fontSize: 18, color: Colors.black),
-    bodyMedium: TextStyle(fontSize: 16, color: Colors.black54),
-    titleLarge: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-  ),
-  buttonTheme: const ButtonThemeData(
-    buttonColor: Colors.blue,
-    textTheme: ButtonTextTheme.primary,
-  ),
-);
+class AppTheme {
+  // Light theme
+  static ThemeData get light => ThemeData(
+    primarySwatch: Colors.blue,
+    brightness: Brightness.light,
+    inputDecorationTheme: const InputDecorationTheme(
+      border: OutlineInputBorder(),
+      filled: true,
+      contentPadding: EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+    ),
+    elevatedButtonTheme: ElevatedButtonThemeData(
+      style: ElevatedButton.styleFrom(
+        padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(8),
+        ),
+      ),
+    ),
+  );
+
+  // Dark theme (opsional)
+  static ThemeData get dark => ThemeData(
+    primarySwatch: Colors.blue,
+    brightness: Brightness.dark,
+    inputDecorationTheme: const InputDecorationTheme(
+      border: OutlineInputBorder(),
+      filled: true,
+      fillColor: Colors.black12,
+      contentPadding: EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+    ),
+    elevatedButtonTheme: ElevatedButtonThemeData(
+      style: ElevatedButton.styleFrom(
+        padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(8),
+        ),
+      ),
+    ),
+  );
+}
