@@ -1,3 +1,5 @@
+import 'package:flutter/material.dart';
+
 class CounterScreen extends StatefulWidget {
   const CounterScreen({Key? key}) : super(key: key);
 
