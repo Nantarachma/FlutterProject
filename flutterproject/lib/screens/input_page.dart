@@ -4,32 +4,39 @@ class InputPage extends StatefulWidget {
   const InputPage({Key? key}) : super(key: key);
 
   @override
-  _InputPageState createState() => _InputPageState();
+  State<InputPage> createState() => _InputPageState();
 }
 
 class _InputPageState extends State<InputPage> {
-  final TextEditingController _controller = TextEditingController();
+  final _formKey = GlobalKey<FormState>();
+  String _input = '';
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(title: const Text('Input Page')),
-      body: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Column(
-          children: [
-            TextField(
-              controller: _controller,
-              decoration: const InputDecoration(labelText: 'Enter something'),
+      body: SingleChildScrollView(
+        child: Padding(
+          padding: const EdgeInsets.all(16.0),
+          child: Form(
+            key: _formKey,
+            child: Column(
+              children: [
+                TextFormField(
+                  decoration: const InputDecoration(
+                    labelText: 'Enter your text',
+                  ),
+                  onChanged: (value) {
+                    setState(() {
+                      _input = value;
+                    });
+                  },
+                ),
+                const SizedBox(height: 20),
+                Text('You typed: $_input'),
+              ],
             ),
-            const SizedBox(height: 20),
-            ElevatedButton(
-              onPressed: () {
-                // Handle input submission
-              },
-              child: const Text('Submit'),
-            ),
-          ],
+          ),
         ),
       ),
     );
