@@ -2,46 +2,57 @@ import 'package:flutter/material.dart';
 import '../widgets/product_card.dart';
 import '../models/item.dart';
 
-class HomePage extends StatelessWidget {
+class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);
 
   @override
-  Widget build(BuildContext context) {
-    // Daftar item
-    final List<Item> items = [
-      Item(
-        imageUrl: 'assets/mykonos_downtoearth.png',
-        productName: 'Mykonos Down To Earth',
-        price: '\$25',
-        rating: 4.5,
-      ),
-      Item(
-        imageUrl: 'assets/mykonos_enchanted.png',
-        productName: 'Mykonos Enchanted',
-        price: '\$20',
-        rating: 4.0,
-      ),
-      Item(
-        imageUrl: 'assets/scandalicius.png',
-        productName: 'Scandalicius',
-        price: '\$30',
-        rating: 4.8,
-      ),
-      Item(
-        imageUrl: 'assets/wishoftomorrow.png',
-        productName: 'Wish of Tomorrow',
-        price: '\$35',
-        rating: 4.2,
-      ),
-      Item(
-        imageUrl: 'assets/wonka.png',
-        productName: 'Wonka',
-        price: '\$40',
-        rating: 4.7,
-      ),
-      // Tambahkan item baru di sini
-    ];
+  _HomePageState createState() => _HomePageState();
+}
 
+class _HomePageState extends State<HomePage> {
+  final List<Item> items = [
+    Item(
+      imageUrl: 'assets/mykonos_downtoearth.png',
+      productName: 'Mykonos Down To Earth',
+      price: '\$25',
+      rating: 4.5,
+    ),
+    Item(
+      imageUrl: 'assets/mykonos_enchanted.png',
+      productName: 'Mykonos Enchanted',
+      price: '\$20',
+      rating: 4.0,
+    ),
+    Item(
+      imageUrl: 'assets/scandalicius.png',
+      productName: 'Scandalicius',
+      price: '\$30',
+      rating: 4.8,
+    ),
+    Item(
+      imageUrl: 'assets/wishoftomorrow.png',
+      productName: 'Wish of Tomorrow',
+      price: '\$35',
+      rating: 4.2,
+    ),
+    Item(
+      imageUrl: 'assets/wonka.png',
+      productName: 'Wonka',
+      price: '\$40',
+      rating: 4.7,
+    ),
+  ];
+
+  final Map<String, bool> favoriteStatus = {};
+
+  void toggleFavorite(String productName, bool isFavorite) {
+    setState(() {
+      favoriteStatus[productName] = isFavorite;
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: Column(
@@ -66,7 +77,6 @@ class HomePage extends StatelessWidget {
       ),
       body: Column(
         children: [
-          // Tab bar
           Container(
             padding: const EdgeInsets.all(10),
             child: Row(
@@ -88,8 +98,6 @@ class HomePage extends StatelessWidget {
               ],
             ),
           ),
-
-          // Grid view
           Expanded(
             child: GridView.builder(
               gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
@@ -100,13 +108,18 @@ class HomePage extends StatelessWidget {
               itemCount: items.length,
               itemBuilder: (context, index) {
                 final item = items[index];
+                final isFavorite = favoriteStatus[item.productName] ?? false;
                 return ProductCard(
                   imageUrl: item.imageUrl,
                   productName: item.productName,
                   price: item.price,
                   rating: item.rating,
-                  imageHeight: 500, // Ubah ukuran gambar di sini
-                  imageWidth: 500, // Ubah ukuran gambar di sini
+                  imageHeight: 500,
+                  imageWidth: 500,
+                  isFavorite: isFavorite,
+                  onFavoriteToggle: (isFavorite) {
+                    toggleFavorite(item.productName, isFavorite);
+                  },
                 );
               },
             ),
