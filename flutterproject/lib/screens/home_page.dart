@@ -1,55 +1,117 @@
 import 'package:flutter/material.dart';
-import 'package:flutterproject/screens/second_page.dart';
+import '../widgets/product_card.dart';
+import '../models/item.dart';
 
 class HomePage extends StatelessWidget {
   const HomePage({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    // Daftar item
+    final List<Item> items = [
+      Item(
+        imageUrl: 'assets/mykonos_downtoearth.png',
+        productName: 'Mykonos Down To Earth',
+        price: '\$25',
+        rating: 4.5,
+      ),
+      Item(
+        imageUrl: 'assets/mykonos_enchanted.png',
+        productName: 'Mykonos Enchanted',
+        price: '\$20',
+        rating: 4.0,
+      ),
+      Item(
+        imageUrl: 'assets/scandalicius.png',
+        productName: 'Scandalicius',
+        price: '\$30',
+        rating: 4.8,
+      ),
+      Item(
+        imageUrl: 'assets/wishoftomorrow.png',
+        productName: 'Wish of Tomorrow',
+        price: '\$35',
+        rating: 4.2,
+      ),
+      Item(
+        imageUrl: 'assets/wonka.png',
+        productName: 'Wonka',
+        price: '\$40',
+        rating: 4.7,
+      ),
+      // Tambahkan item baru di sini
+    ];
+
     return Scaffold(
-      appBar: AppBar(title: const Text('Marketplace')),
-      body: GridView.builder(
-        padding: const EdgeInsets.all(8.0),
-        gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-          crossAxisCount: 2,
-          crossAxisSpacing: 8.0,
-          mainAxisSpacing: 8.0,
-          childAspectRatio: 0.75,
-        ),
-        itemCount: 20, // Replace with your item count
-        itemBuilder: (context, index) {
-          return GestureDetector(
-            onTap: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => SecondPage(
-                    imageUrl: 'https://via.placeholder.com/150',
-                    title: 'Item $index',
-                    description: 'Description of Item $index',
-                    price: '\$${(index + 1) * 10}',
-                  ),
-                ),
-              );
-            },
-            child: Card(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Image.network('https://via.placeholder.com/150', fit: BoxFit.cover),
-                  Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Text('Item $index', style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 8.0),
-                    child: Text('\$${(index + 1) * 10}', style: const TextStyle(fontSize: 14, color: Colors.grey)),
-                  ),
-                ],
-              ),
+      appBar: AppBar(
+        title: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: const [
+            Text(
+              'Best Perfumery',
+              style: TextStyle(fontSize: 18),
             ),
-          );
-        },
+            Text(
+              'All your perfume needs',
+              style: TextStyle(fontSize: 12),
+            ),
+          ],
+        ),
+        actions: const [
+          Icon(Icons.wifi),
+          SizedBox(width: 10),
+          Icon(Icons.battery_full),
+          SizedBox(width: 20),
+        ],
+      ),
+      body: Column(
+        children: [
+          // Tab bar
+          Container(
+            padding: const EdgeInsets.all(10),
+            child: Row(
+              children: [
+                ElevatedButton(
+                  onPressed: () {},
+                  child: const Text('Popular'),
+                ),
+                const SizedBox(width: 10),
+                ElevatedButton(
+                  onPressed: () {},
+                  child: const Text('New Arrival'),
+                ),
+                const SizedBox(width: 10),
+                ElevatedButton(
+                  onPressed: () {},
+                  child: const Text('Best Seller'),
+                ),
+              ],
+            ),
+          ),
+
+          // Grid view
+          Expanded(
+            child: GridView.builder(
+              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                crossAxisCount: 2,
+                crossAxisSpacing: 10,
+                mainAxisSpacing: 10,
+              ),
+              itemCount: items.length,
+              itemBuilder: (context, index) {
+                final item = items[index];
+                return ProductCard(
+                  imageUrl: item.imageUrl,
+                  productName: item.productName,
+                  price: item.price,
+                  rating: item.rating,
+                  imageHeight: 500, // Ubah ukuran gambar di sini
+                  imageWidth: 500, // Ubah ukuran gambar di sini
+                );
+              },
+            ),
+          ),
+        ],
       ),
     );
   }

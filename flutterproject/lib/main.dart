@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'screens/home_page.dart';
-import 'screens/second_page.dart';
+import 'utils/theme.dart';
 
 void main() {
   runApp(const MyApp());
@@ -12,10 +12,8 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Marketplace App',
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
-      ),
+      title: 'Perfumery App',
+      theme: AppTheme.light, // Menerapkan tema
       home: const HomePage(),
     );
   }

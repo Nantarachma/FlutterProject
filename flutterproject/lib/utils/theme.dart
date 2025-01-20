@@ -5,6 +5,7 @@ class AppTheme {
   static ThemeData get light => ThemeData(
     primarySwatch: Colors.blue,
     brightness: Brightness.light,
+    fontFamily: 'Poppins',
     inputDecorationTheme: const InputDecorationTheme(
       border: OutlineInputBorder(),
       filled: true,
@@ -24,6 +25,7 @@ class AppTheme {
   static ThemeData get dark => ThemeData(
     primarySwatch: Colors.blue,
     brightness: Brightness.dark,
+    fontFamily: 'Poppins',
     inputDecorationTheme: const InputDecorationTheme(
       border: OutlineInputBorder(),
       filled: true,
