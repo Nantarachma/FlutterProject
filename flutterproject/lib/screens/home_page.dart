@@ -78,53 +78,67 @@ class _HomePageState extends State<HomePage> {
       body: Column(
         children: [
           Container(
-            padding: const EdgeInsets.all(10),
-            child: Row(
-              children: [
-                ElevatedButton(
-                  onPressed: () {},
-                  child: const Text('Popular'),
-                ),
-                const SizedBox(width: 10),
-                ElevatedButton(
-                  onPressed: () {},
-                  child: const Text('New Arrival'),
-                ),
-                const SizedBox(width: 10),
-                ElevatedButton(
-                  onPressed: () {},
-                  child: const Text('Best Seller'),
-                ),
-              ],
+            padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 8),
+            child: SingleChildScrollView(
+              scrollDirection: Axis.horizontal,
+              child: Row(
+                children: [
+                  _buildFilterButton('Popular'),
+                  const SizedBox(width: 8),
+                  _buildFilterButton('New Arrival'),
+                  const SizedBox(width: 8),
+                  _buildFilterButton('Best Seller'),
+                ],
+              ),
             ),
           ),
           Expanded(
-            child: GridView.builder(
-              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                crossAxisCount: 2,
-                crossAxisSpacing: 10,
-                mainAxisSpacing: 10,
+            child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 8),
+              child: GridView.builder(
+                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                  crossAxisCount: 2,
+                  childAspectRatio: 0.75, // Mengatur rasio tinggi dan lebar card
+                  crossAxisSpacing: 8,
+                  mainAxisSpacing: 8,
+                ),
+                itemCount: items.length,
+                itemBuilder: (context, index) {
+                  final item = items[index];
+                  final isFavorite = favoriteStatus[item.productName] ?? false;
+                  return ProductCard(
+                    imageUrl: item.imageUrl,
+                    productName: item.productName,
+                    price: item.price,
+                    rating: item.rating,
+                    imageHeight: 150, // Ukuran fixed untuk image
+                    imageWidth: double.infinity,
+                    isFavorite: isFavorite,
+                    onFavoriteToggle: (isFavorite) {
+                      toggleFavorite(item.productName, isFavorite);
+                    },
+                  );
+                },
               ),
-              itemCount: items.length,
-              itemBuilder: (context, index) {
-                final item = items[index];
-                final isFavorite = favoriteStatus[item.productName] ?? false;
-                return ProductCard(
-                  imageUrl: item.imageUrl,
-                  productName: item.productName,
-                  price: item.price,
-                  rating: item.rating,
-                  imageHeight: 500,
-                  imageWidth: 500,
-                  isFavorite: isFavorite,
-                  onFavoriteToggle: (isFavorite) {
-                    toggleFavorite(item.productName, isFavorite);
-                  },
-                );
-              },
             ),
           ),
         ],
+      ),
+    );
+  }
+
+  Widget _buildFilterButton(String text) {
+    return ElevatedButton(
+      onPressed: () {},
+      style: ElevatedButton.styleFrom(
+        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(8),
+        ),
+      ),
+      child: Text(
+        text,
+        style: const TextStyle(fontSize: 13),
       ),
     );
   }

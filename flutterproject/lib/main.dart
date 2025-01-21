@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'screens/home_page.dart';
 import 'utils/theme.dart';
+import 'utils/size_config.dart';
 
 void main() {
   runApp(const MyApp());
@@ -13,8 +14,15 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Perfumery App',
-      theme: AppTheme.light, // Menerapkan tema
-      home: const HomePage(),
+      theme: AppTheme.light,
+      builder: (context, child) {
+        SizeConfig.init(context); // Menggunakan method static
+        return MediaQuery(
+          data: MediaQuery.of(context).copyWith(textScaleFactor: 1.0),
+          child: child!,
+        );
+      },
+      home: const HomePage(), // Menggunakan HomePage sebagai halaman utama
     );
   }
 }
