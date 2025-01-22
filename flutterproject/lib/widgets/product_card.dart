@@ -6,8 +6,6 @@ class ProductCard extends StatefulWidget {
   final String productName;
   final String price;
   final double rating;
-  final double imageHeight;
-  final double imageWidth;
   final bool isFavorite;
   final Function(bool) onFavoriteToggle;
 
@@ -17,8 +15,6 @@ class ProductCard extends StatefulWidget {
     required this.productName,
     required this.price,
     required this.rating,
-    this.imageHeight = 150,
-    this.imageWidth = double.infinity,
     this.isFavorite = false,
     required this.onFavoriteToggle,
   }) : super(key: key);
@@ -71,67 +67,66 @@ class _ProductCardState extends State<ProductCard> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Stack(
-              children: [
-                ClipRRect(
-                  borderRadius: const BorderRadius.vertical(
-                    top: Radius.circular(8),
-                  ),
-                  child: Center(
+            AspectRatio(
+              aspectRatio: 1, // Ini akan membuat gambar 1:1
+              child: Stack(
+                fit: StackFit.expand,
+                children: [
+                  ClipRRect(
+                    borderRadius: const BorderRadius.vertical(
+                      top: Radius.circular(8),
+                    ),
                     child: Image.network(
                       widget.imageUrl,
-                      height: widget.imageHeight,
-                      width: widget.imageWidth,
                       fit: BoxFit.cover,
                       loadingBuilder: (context, child, loadingProgress) {
                         if (loadingProgress == null) return child;
-                        return SizedBox(
-                          height: widget.imageHeight,
-                          width: widget.imageWidth,
-                          child: Center(
-                            child: CircularProgressIndicator(
-                              value: loadingProgress.expectedTotalBytes != null
-                                  ? loadingProgress.cumulativeBytesLoaded /
-                                  loadingProgress.expectedTotalBytes!
-                                  : null,
-                            ),
+                        return Center(
+                          child: CircularProgressIndicator(
+                            value: loadingProgress.expectedTotalBytes != null
+                                ? loadingProgress.cumulativeBytesLoaded /
+                                loadingProgress.expectedTotalBytes!
+                                : null,
                           ),
                         );
                       },
                       errorBuilder: (context, error, stackTrace) {
                         return Container(
-                          height: widget.imageHeight,
-                          width: widget.imageWidth,
                           color: Colors.grey[200],
-                          child: const Center(
-                            child: Icon(
-                              Icons.error_outline,
-                              color: Colors.red,
-                            ),
+                          child: const Icon(
+                            Icons.error_outline,
+                            color: Colors.red,
+                            size: 30,
                           ),
                         );
                       },
                     ),
                   ),
-                ),
-                Positioned(
-                  top: 8,
-                  right: 8,
-                  child: Container(
-                    decoration: BoxDecoration(
-                      color: Colors.white.withOpacity(0.8),
-                      shape: BoxShape.circle,
-                    ),
-                    child: IconButton(
-                      icon: Icon(
-                        isFavorite ? Icons.favorite : Icons.favorite_border,
-                        color: isFavorite ? Colors.red : Colors.grey,
+                  Positioned(
+                    top: 8,
+                    right: 8,
+                    child: Container(
+                      decoration: BoxDecoration(
+                        color: Colors.white.withOpacity(0.8),
+                        shape: BoxShape.circle,
                       ),
-                      onPressed: toggleFavorite,
+                      child: IconButton(
+                        constraints: const BoxConstraints(
+                          minWidth: 36,
+                          minHeight: 36,
+                        ),
+                        padding: EdgeInsets.zero,
+                        icon: Icon(
+                          isFavorite ? Icons.favorite : Icons.favorite_border,
+                          color: isFavorite ? Colors.red : Colors.grey,
+                          size: 20,
+                        ),
+                        onPressed: toggleFavorite,
+                      ),
                     ),
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
             Padding(
               padding: const EdgeInsets.all(8.0),
@@ -142,7 +137,7 @@ class _ProductCardState extends State<ProductCard> {
                     widget.productName,
                     style: const TextStyle(
                       fontWeight: FontWeight.bold,
-                      fontSize: 16,
+                      fontSize: 14,
                     ),
                     maxLines: 2,
                     overflow: TextOverflow.ellipsis,
@@ -158,7 +153,6 @@ class _ProductCardState extends State<ProductCard> {
                   ),
                   const SizedBox(height: 4),
                   Row(
-                    mainAxisAlignment: MainAxisAlignment.start,
                     children: [
                       const Icon(
                         Icons.star,
@@ -169,7 +163,7 @@ class _ProductCardState extends State<ProductCard> {
                       Text(
                         widget.rating.toString(),
                         style: const TextStyle(
-                          fontSize: 14,
+                          fontSize: 12,
                           fontWeight: FontWeight.w500,
                         ),
                       ),
