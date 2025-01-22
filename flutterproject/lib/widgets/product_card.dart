@@ -10,14 +10,14 @@ class ProductCard extends StatefulWidget {
   final Function(bool) onFavoriteToggle;
 
   const ProductCard({
-    Key? key,
+    super.key,
     required this.imageUrl,
     required this.productName,
     required this.price,
     required this.rating,
     this.isFavorite = false,
     required this.onFavoriteToggle,
-  }) : super(key: key);
+  });
 
   @override
   _ProductCardState createState() => _ProductCardState();
@@ -41,6 +41,26 @@ class _ProductCardState extends State<ProductCard> {
 
   @override
   Widget build(BuildContext context) {
+    final screenSize = MediaQuery.of(context).size;
+    final baseFontSize = screenSize.width * 0.03;
+    final constrainedFontSize = baseFontSize.clamp(11.0, 16.0);
+
+    final textStyles = {
+      'productName': TextStyle(
+        fontSize: constrainedFontSize,
+        fontWeight: FontWeight.bold,
+      ),
+      'price': TextStyle(
+        fontSize: constrainedFontSize * 0.9,
+        color: Colors.green,
+        fontWeight: FontWeight.w500,
+      ),
+      'rating': TextStyle(
+        fontSize: constrainedFontSize * 0.8,
+        fontWeight: FontWeight.w500,
+      ),
+    };
+
     return GestureDetector(
       onTap: () {
         Navigator.push(
@@ -64,62 +84,64 @@ class _ProductCardState extends State<ProductCard> {
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(8),
         ),
+        clipBehavior: Clip.antiAlias,
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
+          mainAxisSize: MainAxisSize.min,
           children: [
             AspectRatio(
-              aspectRatio: 1, // Ini akan membuat gambar 1:1
+              aspectRatio: 1,
               child: Stack(
                 fit: StackFit.expand,
                 children: [
-                  ClipRRect(
-                    borderRadius: const BorderRadius.vertical(
-                      top: Radius.circular(8),
-                    ),
-                    child: Image.network(
-                      widget.imageUrl,
-                      fit: BoxFit.cover,
-                      loadingBuilder: (context, child, loadingProgress) {
-                        if (loadingProgress == null) return child;
-                        return Center(
+                  Image.network(
+                    widget.imageUrl,
+                    fit: BoxFit.cover,
+                    loadingBuilder: (context, child, loadingProgress) {
+                      if (loadingProgress == null) return child;
+                      return Center(
+                        child: SizedBox(
+                          width: screenSize.width * 0.06,
+                          height: screenSize.width * 0.06,
                           child: CircularProgressIndicator(
+                            strokeWidth: 2,
                             value: loadingProgress.expectedTotalBytes != null
                                 ? loadingProgress.cumulativeBytesLoaded /
                                 loadingProgress.expectedTotalBytes!
                                 : null,
                           ),
-                        );
-                      },
-                      errorBuilder: (context, error, stackTrace) {
-                        return Container(
-                          color: Colors.grey[200],
-                          child: const Icon(
-                            Icons.error_outline,
-                            color: Colors.red,
-                            size: 30,
-                          ),
-                        );
-                      },
-                    ),
+                        ),
+                      );
+                    },
+                    errorBuilder: (context, error, stackTrace) {
+                      return Container(
+                        color: Colors.grey[200],
+                        child: Icon(
+                          Icons.error_outline,
+                          color: Colors.red,
+                          size: screenSize.width * 0.06,
+                        ),
+                      );
+                    },
                   ),
                   Positioned(
-                    top: 8,
-                    right: 8,
+                    top: screenSize.width * 0.01,
+                    right: screenSize.width * 0.01,
                     child: Container(
                       decoration: BoxDecoration(
                         color: Colors.white.withOpacity(0.8),
                         shape: BoxShape.circle,
                       ),
                       child: IconButton(
-                        constraints: const BoxConstraints(
-                          minWidth: 36,
-                          minHeight: 36,
+                        constraints: BoxConstraints(
+                          minWidth: screenSize.width * 0.08,
+                          minHeight: screenSize.width * 0.08,
                         ),
                         padding: EdgeInsets.zero,
+                        iconSize: screenSize.width * 0.045,
                         icon: Icon(
                           isFavorite ? Icons.favorite : Icons.favorite_border,
                           color: isFavorite ? Colors.red : Colors.grey,
-                          size: 20,
                         ),
                         onPressed: toggleFavorite,
                       ),
@@ -129,43 +151,38 @@ class _ProductCardState extends State<ProductCard> {
               ),
             ),
             Padding(
-              padding: const EdgeInsets.all(8.0),
+              padding: EdgeInsets.all(screenSize.width * 0.02).clamp(
+                const EdgeInsets.all(4.0),
+                const EdgeInsets.all(12.0),
+              ),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisSize: MainAxisSize.min,
                 children: [
                   Text(
                     widget.productName,
-                    style: const TextStyle(
-                      fontWeight: FontWeight.bold,
-                      fontSize: 14,
-                    ),
-                    maxLines: 2,
+                    style: textStyles['productName'],
+                    maxLines: 1,
                     overflow: TextOverflow.ellipsis,
                   ),
-                  const SizedBox(height: 4),
+                  SizedBox(height: screenSize.width * 0.01),
                   Text(
                     widget.price,
-                    style: const TextStyle(
-                      fontSize: 14,
-                      color: Colors.green,
-                      fontWeight: FontWeight.w500,
-                    ),
+                    style: textStyles['price'],
                   ),
-                  const SizedBox(height: 4),
+                  SizedBox(height: screenSize.width * 0.01),
                   Row(
+                    mainAxisSize: MainAxisSize.min,
                     children: [
-                      const Icon(
+                      Icon(
                         Icons.star,
                         color: Colors.amber,
-                        size: 16,
+                        size: constrainedFontSize * 1.2,
                       ),
-                      const SizedBox(width: 4),
+                      SizedBox(width: screenSize.width * 0.01),
                       Text(
                         widget.rating.toString(),
-                        style: const TextStyle(
-                          fontSize: 12,
-                          fontWeight: FontWeight.w500,
-                        ),
+                        style: textStyles['rating'],
                       ),
                     ],
                   ),

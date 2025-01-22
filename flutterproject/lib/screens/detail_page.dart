@@ -9,14 +9,14 @@ class DetailPage extends StatefulWidget {
   final Function(bool) onFavoriteToggle;
 
   const DetailPage({
-    Key? key,
+    super.key,
     required this.imageUrl,
     required this.productName,
     required this.price,
     required this.rating,
     this.isFavorite = false,
     required this.onFavoriteToggle,
-  }) : super(key: key);
+  });
 
   @override
   _DetailPageState createState() => _DetailPageState();

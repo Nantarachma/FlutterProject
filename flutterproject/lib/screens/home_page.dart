@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import '../widgets/product_card.dart';
 import '../models/item.dart';
+import 'about_page.dart';
 
 class HomePage extends StatefulWidget {
-  const HomePage({Key? key}) : super(key: key);
+  const HomePage({super.key});
 
   @override
   _HomePageState createState() => _HomePageState();
@@ -68,46 +69,42 @@ class _HomePageState extends State<HomePage> {
             ),
           ],
         ),
-        actions: const [
-          Icon(Icons.wifi),
-          SizedBox(width: 10),
-          Icon(Icons.battery_full),
-          SizedBox(width: 20),
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.info_outline),
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => const AboutPage()),
+              );
+            },
+          ),
+          const SizedBox(width: 8),
         ],
       ),
       body: Column(
         children: [
           Container(
-            padding: const EdgeInsets.all(10),
-            child: SingleChildScrollView(
+            height: 50,
+            padding: const EdgeInsets.symmetric(horizontal: 8),
+            child: ListView(
               scrollDirection: Axis.horizontal,
-              child: Row(
-                children: [
-                  ElevatedButton(
-                    onPressed: () {},
-                    child: const Text('Popular'),
-                  ),
-                  const SizedBox(width: 10),
-                  ElevatedButton(
-                    onPressed: () {},
-                    child: const Text('New Arrival'),
-                  ),
-                  const SizedBox(width: 10),
-                  ElevatedButton(
-                    onPressed: () {},
-                    child: const Text('Best Seller'),
-                  ),
-                ],
-              ),
+              children: [
+                _buildFilterButton('Popular'),
+                const SizedBox(width: 8),
+                _buildFilterButton('New Arrival'),
+                const SizedBox(width: 8),
+                _buildFilterButton('Best Seller'),
+              ],
             ),
           ),
           Expanded(
             child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 8),
+              padding: const EdgeInsets.all(8.0),
               child: GridView.builder(
                 gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                   crossAxisCount: 2,
-                  childAspectRatio: 0.7, // Rasio untuk card
+                  childAspectRatio: 0.68,
                   crossAxisSpacing: 8,
                   mainAxisSpacing: 8,
                 ),
@@ -130,6 +127,20 @@ class _HomePageState extends State<HomePage> {
             ),
           ),
         ],
+      ),
+    );
+  }
+
+  Widget _buildFilterButton(String text) {
+    return ElevatedButton(
+      onPressed: () {},
+      style: ElevatedButton.styleFrom(
+        padding: const EdgeInsets.symmetric(horizontal: 16),
+        minimumSize: const Size(80, 36),
+      ),
+      child: Text(
+        text,
+        style: const TextStyle(fontSize: 12),
       ),
     );
   }

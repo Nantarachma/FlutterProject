@@ -6,11 +6,11 @@ class ResponsiveLayout extends StatelessWidget {
   final double breakpoint;
 
   const ResponsiveLayout({
-    Key? key,
+    super.key,
     required this.wide,
     required this.narrow,
     this.breakpoint = 700,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
