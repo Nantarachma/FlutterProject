@@ -94,7 +94,7 @@ class _ProductCardState extends State<ProductCard> {
               child: Stack(
                 fit: StackFit.expand,
                 children: [
-                  Image.network(
+                  Image.asset(
                     widget.imageUrl,
                     fit: BoxFit.cover,
                     loadingBuilder: (context, child, loadingProgress) {

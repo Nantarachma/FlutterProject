@@ -127,7 +127,7 @@ class _DetailPageState extends State<DetailPage> {
       width: double.infinity,
       child: ClipRRect(
         borderRadius: BorderRadius.circular(8.0),
-        child: Image.network(
+        child: Image.asset(
           widget.imageUrl,
           fit: BoxFit.contain,
           loadingBuilder: (context, child, loadingProgress) {
